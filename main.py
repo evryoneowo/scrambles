@@ -1,6 +1,7 @@
 from random import randint, choice
 
 from move import Move
+from config import *
 
 MOVE_LETTERS = 'FBRLUD'
 AXIS_MAP = {
@@ -13,30 +14,38 @@ MOVES_AMOUNT = randint(20, 25)
 
 def randomize():
     letter = choice(MOVE_LETTERS)
-    direction = 0 if randint(0, 2) else 1
-    amount = 0 if randint(0, 3) else 1
+    direction = 0 if randint(0, 100) < INVERTION_CHANCE else 1
+    amount = 0 if randint(0, 100) < DOUBLE_CHANCE else 1
 
     return letter, direction, amount
 
-print(f'{MOVES_AMOUNT} moves in total')
-
-moves = [Move(*randomize())]
-for i in range(MOVES_AMOUNT-1):
-    letter, direction, amount = randomize()
-    
-    while letter == moves[-1].letter:
+scrambles = []
+for _ in range(SCRAMBLES_AMOUNT):
+    moves = []
+    for i in range(MOVES_AMOUNT):
         letter, direction, amount = randomize()
+        
+        if moves and letter == moves[-1].letter:
+            continue
 
-    if i:
-        axis_m1 = AXIS_MAP[moves[-2].letter]
-        axis_m2 = AXIS_MAP[moves[-1].letter]
-        axis_m3 = AXIS_MAP[letter]
+        if len(moves) > 1:
+            axis_m1 = AXIS_MAP[moves[-2].letter]
+            axis_m2 = AXIS_MAP[moves[-1].letter]
+            axis_candidate = AXIS_MAP[letter]
 
-        while (axis_m1 == axis_m2 and axis_m2 == axis_m3) or letter == moves[-1].letter:
-            letter, direction, amount = randomize()
-            axis_m3 = AXIS_MAP[letter]
+            if axis_m1 == axis_m2 == axis_candidate:
+                continue
 
-    moves.append(Move(letter, direction, amount))
+        moves.append(Move(letter, direction, amount))
+    
+    scrambles.append(moves)
 
-print(' '.join(map(str, moves)))
-input()
+txts = [f'{len(scramble)} moves in total\n{' '.join(map(str, scramble))}\n' for scramble in scrambles]
+
+if SAVE_TO_FILE:
+    with open(SAVE_TO_FILE, 'w') as f:
+        f.write('\n'.join(txts))
+else:
+    for txt in txts:
+        print(txt)
+    input()
