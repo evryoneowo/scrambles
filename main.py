@@ -10,7 +10,7 @@ AXIS_MAP = {
     'U': 'Y', 'D': 'Y'
 }
 
-MOVES_AMOUNT = randint(20, 25)
+MOVES_AMOUNT = AMOUNT if AMOUNT else randint(20, 25)
 
 def randomize():
     letter = choice(MOVE_LETTERS)
