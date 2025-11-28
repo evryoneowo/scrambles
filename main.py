@@ -10,8 +10,6 @@ AXIS_MAP = {
     'U': 'Y', 'D': 'Y'
 }
 
-MOVES_AMOUNT = AMOUNT if AMOUNT else randint(20, 25)
-
 def randomize():
     letter = choice(MOVE_LETTERS)
     direction = 0 if randint(0, 100) < INVERTION_CHANCE else 1
@@ -22,7 +20,8 @@ def randomize():
 scrambles = []
 for _ in range(SCRAMBLES_AMOUNT):
     moves = []
-    for i in range(MOVES_AMOUNT):
+    moves_amount = AMOUNT if AMOUNT else randint(20, 25)
+    while len(moves) < moves_amount:
         letter, direction, amount = randomize()
         
         if moves and letter == moves[-1].letter:
