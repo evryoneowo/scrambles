@@ -78,9 +78,3 @@ class Cube:
                     self.state[face_to][sticker_to] = self.state[face_from][sticker_from]
                 
                 self.state[cycle[0][0]][cycle[0][1]] = cache
-
-cube = Cube()
-print(cube.state)
-cube.move('F', 0, 0)
-cube.move('F', 1, 0)
-print(cube.state)
