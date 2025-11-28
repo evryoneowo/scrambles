@@ -4,4 +4,4 @@ DOUBLE_CHANCE = 25 # chance of a double move (e.g. R2) 0 - 100
 SAVE_TO_FILE = None # filename/None - save scramble(s) to the file/do not save
 
 SCRAMBLES_AMOUNT = 2 # amount of scrambles to generate
-AMOUNT = None # moves amount/None - amount of moves in scrumble/default value (20-25)
+AMOUNT = '25-30' # moves range (e.g. 25-30)

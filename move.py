@@ -8,4 +8,4 @@ class Move:
         if self.amount:
             return f'{self.letter}2'
         else:
-            return self.letter + ('`' if self.direction else '')
+            return self.letter + ('\'' if self.direction else '')

@@ -1,6 +1,8 @@
+from copy import deepcopy
 from random import randint, choice
 
 from move import Move
+from cube import Cube
 from config import *
 
 MOVE_LETTERS = 'FBRLUD'
@@ -12,15 +14,17 @@ AXIS_MAP = {
 
 def randomize():
     letter = choice(MOVE_LETTERS)
-    direction = 0 if randint(0, 100) < INVERTION_CHANCE else 1
-    amount = 0 if randint(0, 100) < DOUBLE_CHANCE else 1
+    direction = 1 if randint(0, 100) < INVERTION_CHANCE else 0
+    amount = 1 if randint(0, 100) < DOUBLE_CHANCE else 0
 
     return letter, direction, amount
 
 scrambles = []
 for _ in range(SCRAMBLES_AMOUNT):
+    cube = Cube()
+    state_history = []
     moves = []
-    moves_amount = AMOUNT if AMOUNT else randint(20, 25)
+    moves_amount = randint(*list(map(int, AMOUNT.split('-')))) if AMOUNT else randint(20, 25)
     while len(moves) < moves_amount:
         letter, direction, amount = randomize()
         
@@ -34,7 +38,14 @@ for _ in range(SCRAMBLES_AMOUNT):
 
             if axis_m1 == axis_m2 == axis_candidate:
                 continue
+        
+        cube.move(letter, direction, amount)
+        current_state = deepcopy(cube.state)
 
+        if current_state in state_history:
+            continue
+        
+        state_history.append(current_state)
         moves.append(Move(letter, direction, amount))
     
     scrambles.append(moves)
